@@ -1,0 +1,66 @@
+package fees_management;
+import javax.swing.*;
+import java.awt.event.*;
+import java.sql.*;
+
+public class Login extends JFrame {
+    JTextField user;
+    JPasswordField pass;
+    JButton login;
+
+    public Login() {
+        setTitle("Login");
+        setSize(300,200);
+        setLayout(null);
+
+        JLabel l1 = new JLabel("Username:");
+        l1.setBounds(30,30,80,25);
+        add(l1);
+
+        user = new JTextField();
+        user.setBounds(120,30,120,25);
+        add(user);
+
+        JLabel l2 = new JLabel("Password:");
+        l2.setBounds(30,70,80,25);
+        add(l2);
+
+        pass = new JPasswordField();
+        pass.setBounds(120,70,120,25);
+        add(pass);
+
+        login = new JButton("Login");
+        login.setBounds(100,110,80,30);
+        add(login);
+
+        login.addActionListener(e -> checkLogin());
+
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setVisible(true);
+    }
+
+    void checkLogin() {
+        try {
+            Connection con = DBConnection.getConnection();
+            String sql = "SELECT * FROM users WHERE username=? AND password=?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, user.getText());
+            ps.setString(2, String.valueOf(pass.getPassword()));
+
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()) {
+                new Dashboard();
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Invalid Login");
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        new Login();
+    }
+}
