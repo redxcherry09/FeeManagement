@@ -1,0 +1,61 @@
+package fees_management;
+import javax.swing.*;
+import java.awt.*;
+
+public class Dashboard extends JFrame {
+
+    public Dashboard() {
+        setTitle("💰 Fees Management System");
+        setSize(600, 400);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        // Main Panel
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+        panel.setBackground(new Color(30, 30, 60)); // dark theme
+
+        // Title
+        JLabel title = new JLabel("Fees Management Dashboard");
+        title.setBounds(120, 20, 400, 40);
+        title.setForeground(Color.WHITE);
+        title.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        panel.add(title);
+
+        // Buttons
+        JButton addStudent = createButton("➕ Add Student", 100);
+        JButton payFees = createButton("💳 Pay Fees", 150);
+        JButton viewStudents = createButton("📋 View Students", 200);
+        viewStudents.addActionListener(e -> new ViewStudents());
+        JButton logout = createButton("🚪 Logout", 250);
+
+        panel.add(addStudent);
+        panel.add(payFees);
+        panel.add(viewStudents);
+        panel.add(logout);
+
+        // Button Actions
+        addStudent.addActionListener(e -> new AddStudent());
+        payFees.addActionListener(e -> new PayFees());
+        viewStudents.addActionListener(e -> new ViewStudents());
+
+        logout.addActionListener(e -> {
+            new Login();
+            dispose();
+        });
+
+        add(panel);
+        setVisible(true);
+    }
+
+    // Button Design Method
+    JButton createButton(String text, int y) {
+        JButton btn = new JButton(text);
+        btn.setBounds(200, y, 200, 35);
+        btn.setBackground(new Color(70, 130, 180));
+        btn.setForeground(Color.WHITE);
+        btn.setFocusPainted(false);
+        btn.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        return btn;
+    }
+}
