@@ -99,7 +99,7 @@ git clone https://github.com/your-username/fee-management-system.git
 ```java
 jdbc:mysql://localhost:3306/fee_db
 username: root
-password: your_password
+password: root
 ```
 
 ### Step 4: Add MySQL Connector
@@ -150,8 +150,8 @@ Password: admin123
 
 ## 👨‍💻 Author
 
-**Your Name**
-Java Developer 🚀
+RUBY SINGH
+Java Developer🚀
 
 ---
 
