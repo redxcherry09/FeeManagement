@@ -1,0 +1,73 @@
+package fees_management;
+import javax.swing.*;
+import java.awt.*;
+import java.sql.*;
+
+public class AddStudent extends JFrame {
+
+    JTextField name, course, totalFees;
+
+    public AddStudent() {
+        setTitle("➕ Add Student");
+        setSize(400, 350);
+        setLocationRelativeTo(null);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+        panel.setBackground(new Color(245, 245, 245));
+
+        JLabel title = new JLabel("Add New Student");
+        title.setBounds(100, 20, 200, 30);
+        title.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        panel.add(title);
+
+        name = createField(panel, "👤 Name", 70);
+        course = createField(panel, "📘 Course", 120);
+        totalFees = createField(panel, "💰 Total Fees", 170);
+
+        JButton save = new JButton("💾 Save");
+        save.setBounds(130, 230, 120, 35);
+        save.setBackground(new Color(60, 179, 113)); // green
+        save.setForeground(Color.WHITE);
+        panel.add(save);
+
+        save.addActionListener(e -> saveStudent());
+
+        add(panel);
+        setVisible(true);
+    }
+
+    JTextField createField(JPanel panel, String label, int y) {
+        JLabel l = new JLabel(label);
+        l.setBounds(40, y, 120, 25);
+        panel.add(l);
+
+        JTextField tf = new JTextField();
+        tf.setBounds(160, y, 160, 25);
+        panel.add(tf);
+
+        return tf;
+    }
+
+    void saveStudent() {
+        try {
+            Connection con = DBConnection.getConnection();
+            double total = Double.parseDouble(totalFees.getText());
+
+            PreparedStatement ps = con.prepareStatement(
+                "INSERT INTO students(name, course, total_fees, paid_fees, remaining_fees) VALUES (?, ?, ?, 0, ?)"
+            );
+
+            ps.setString(1, name.getText());
+            ps.setString(2, course.getText());
+            ps.setDouble(3, total);
+            ps.setDouble(4, total);
+
+            ps.executeUpdate();
+
+            JOptionPane.showMessageDialog(this, "✅ Student Added!");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
